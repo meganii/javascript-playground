@@ -5,6 +5,8 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import './firebase/config';
+
 ReactDOM.render(
     <MuiThemeProvider>
         <App />
