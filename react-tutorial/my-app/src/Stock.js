@@ -36,13 +36,13 @@ class Stock extends Component {
     const dataset = this.state.data.dataset;
     const currentPrice = dataset.data[0][4];
     const beforePrice = dataset.data[1][4];
-
+    const profitAndLoss = (currentPrice - this.props.avgBuyPrice) * this.props.numberOfSharesHeld;
     return (
       <ListItem 
         key={this.props.index}
         className="Stock"
         primaryText={this.props.name}
-        secondaryText={this.props.code + ':' + this.props.price}
+        secondaryText={this.props.code + "\n 損益: " + String(profitAndLoss).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}
         secondaryTextLines={2}
         leftIcon={<div className="rightIcon">A</div>}
         rightAvatar={
@@ -50,6 +50,8 @@ class Stock extends Component {
             <StockIndicator
               currentPrice={currentPrice}
               beforePrice={beforePrice}
+              avgBuyPrice={this.props.avgBuyPrice}
+              numberOfSharesHeld={this.props.numberOfSharesHeld}
             />
           </div>
         }
