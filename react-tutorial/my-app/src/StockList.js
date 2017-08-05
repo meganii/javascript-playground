@@ -18,7 +18,7 @@ class StockList extends Component {
   componentDidMount() {
     const stocksRef = firebase.database().ref('/stocks');
     let list = [];
-    stocksRef.once('value', snap => {
+    stocksRef.on('value', snap => {
       list = snap.val();
       const stocks = Object.keys(list).map((key)=> {
         return Object.assign(list[key], {key});
@@ -45,10 +45,12 @@ class StockList extends Component {
       <div className="StockItem">
         <Stock 
           index={index} 
-          name={stock.name} 
-          code={stock.key}
+          name={stock.name}
+          code={stock.code}
           avgBuyPrice={stock.avgBuyPrice}
           numberOfSharesHeld={stock.numberOfSharesHeld}
+          currentPrice={stock.currentPrice}
+          previousPrice={stock.previousPrice}
         />
         <Divider />
       </div>

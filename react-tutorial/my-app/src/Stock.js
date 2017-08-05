@@ -9,14 +9,19 @@ import StockIndicator from './StockIndicator';
 
 class Stock extends Component {
 
-  state = {
-    data: []
-  };
-
-  componentWillMount() {
-    this.loadData();
+  constructor() {
+    super();
+    this.state = {
+      data: []
+    };
   }
+
+
+  // componentDidMount() {
+  //   // this.loadData();
+  // }
   loadData() {
+    // fetch('https://www.quandl.com/api/v3/datasets/TSE/' + this.props.code + '.json?api_key=v3fax8Loj-uCxGHas9w3&start_date=2017-07-30')
     fetch('./'+ this.props.code + '.json')
       .then(response => response.json())
       .then(json => {
@@ -29,16 +34,15 @@ class Stock extends Component {
   }
 
   render() {
-    if (this.state.data.length == 0) {
-      return null;
-    };
+    // if (this.state.data.length == 0) {
+    //   return null;
+    // };
 
-    const dataset = this.state.data.dataset;
-    const currentPrice = dataset.data[0][4];
-    const beforePrice = dataset.data[1][4];
+    const currentPrice = this.props.currentPrice;
+    const previousPrice = this.props.previousPrice;
     const profitAndLoss = (currentPrice - this.props.avgBuyPrice) * this.props.numberOfSharesHeld;
     return (
-      <ListItem 
+      <ListItem
         key={this.props.index}
         className="Stock"
         primaryText={this.props.name}
@@ -49,7 +53,7 @@ class Stock extends Component {
           <div className="rightAvator">
             <StockIndicator
               currentPrice={currentPrice}
-              beforePrice={beforePrice}
+              previousPrice={previousPrice}
               avgBuyPrice={this.props.avgBuyPrice}
               numberOfSharesHeld={this.props.numberOfSharesHeld}
             />
