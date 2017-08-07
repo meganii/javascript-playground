@@ -59,7 +59,6 @@ class StockList extends Component {
 
     return (
       <div className="view">
-        <div className="view">5000兆円</div>
         <List className="StockList">
           {stockList}
         </List>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import StockList from './StockList';
+import TotalBalance from './TotalBalance';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
@@ -114,6 +115,7 @@ class App extends Component {
           style={{
             textAlign: 'center'
         }}>
+          <TotalBalance />
           <Dialog
             title="株登録"
             actions={actions}
