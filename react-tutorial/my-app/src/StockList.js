@@ -45,6 +45,7 @@ class StockList extends Component {
       <div className="StockItem">
         <Stock 
           index={index} 
+          stockKey={stock.key}
           name={stock.name}
           code={stock.code}
           avgBuyPrice={stock.avgBuyPrice}
@@ -57,9 +58,12 @@ class StockList extends Component {
     );
 
     return (
-      <List className="StockList">
-        {stockList}
-      </List>
+      <div className="view">
+        <div className="view">5000兆円</div>
+        <List className="StockList">
+          {stockList}
+        </List>
+      </div>
     );
   }
 }

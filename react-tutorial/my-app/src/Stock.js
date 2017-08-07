@@ -4,19 +4,40 @@ import {ListItem} from 'material-ui/List';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import TrendingDown from 'material-ui/svg-icons/action/trending-down';
 import {blue500, red500, greenA200} from 'material-ui/styles/colors';
-
+import Dialog from 'material-ui/Dialog';
 import StockIndicator from './StockIndicator';
+import FlatButton from 'material-ui/FlatButton';
+
+import * as firebase from 'firebase';
 
 class Stock extends Component {
 
   constructor() {
     super();
     this.state = {
-      data: []
+      itemOpen: false,
+      data: [],
     };
   }
 
+  handleOpen = () => {
+    this.setState({itemOpen: true});
+  };
 
+  handleClose = () => {
+    this.setState({itemOpen: false});
+  };
+
+  handleDelete = () => {
+    this.setState({itemOpen: false});
+    var stocksRef = firebase.database().ref('stocks');
+    var query = stocksRef.orderByChild('code').equalTo(this.props.code);
+    query.on('child_added', (snap) => {
+        snap.ref.remove();
+    })
+  };
+
+  
   // componentDidMount() {
   //   // this.loadData();
   // }
@@ -37,30 +58,53 @@ class Stock extends Component {
     // if (this.state.data.length == 0) {
     //   return null;
     // };
+    const actions = [
+        <FlatButton
+          label="Cancel"
+          primary={true}
+          onTouchTap={this.handleClose}
+        />,
+        <FlatButton
+          label="Delete"
+          primary={true}
+          keyboardFocused={true}
+          onTouchTap={this.handleDelete}
+        />,
+      ];
 
     const currentPrice = this.props.currentPrice;
     const previousPrice = this.props.previousPrice;
     const profitAndLoss = (currentPrice - this.props.avgBuyPrice) * this.props.numberOfSharesHeld;
     return (
-      <ListItem
-        key={this.props.index}
-        className="Stock"
-        primaryText={this.props.name}
-        secondaryText={this.props.code + "\n 損益: " + String(profitAndLoss).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}
-        secondaryTextLines={2}
-        leftIcon={<div className="rightIcon">A</div>}
-        rightAvatar={
-          <div className="rightAvator">
-            <StockIndicator
-              currentPrice={currentPrice}
-              previousPrice={previousPrice}
-              avgBuyPrice={this.props.avgBuyPrice}
-              numberOfSharesHeld={this.props.numberOfSharesHeld}
-            />
-          </div>
-        }
-      >
-      </ListItem>
+      <div className="ListItem">
+        <ListItem
+          key={this.props.index}
+          className="Stock"
+          primaryText={this.props.name}
+          secondaryText={this.props.code + "\n 損益: " + String(profitAndLoss).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}
+          secondaryTextLines={2}
+          leftIcon={<div className="rightIcon">A</div>}
+          rightAvatar={
+            <div className="rightAvator">
+              <StockIndicator
+                currentPrice={currentPrice}
+                previousPrice={previousPrice}
+                avgBuyPrice={this.props.avgBuyPrice}
+                numberOfSharesHeld={this.props.numberOfSharesHeld}
+              />
+            </div>
+          }
+          onTouchTap={this.handleOpen}
+        >
+        </ListItem>
+        <Dialog
+          title=""
+          actions={actions}
+          modal={false}
+          open={this.state.itemOpen}
+          onRequestClose={this.handleClose}
+        />
+      </div>
     );
   }
 }
