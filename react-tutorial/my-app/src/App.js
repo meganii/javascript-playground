@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import ReactPullToRefresh from 'react-pull-to-refresh';
+import request from 'request';
 
 import * as firebase from 'firebase';
 
@@ -79,13 +80,41 @@ class App extends Component {
   }
 
   handleRefresh(resolve, reject) {
-    // do some async code here
-    if (true) {
-      console.log("update");
-      resolve();
-    } else {
-      reject();
-    }
+    let self = this;
+    console.log(this);
+    setTimeout(function () {
+      self.refreshStockData() ? resolve() : reject();
+    }, 500);
+  }
+
+  refreshStockData() {
+    const stocksRef = firebase.database().ref().child('stocks');
+    let updates = {};
+    let list = [];
+    stocksRef.once('value').then((snap) => {
+      list = snap.val();
+      const stocks = Object.keys(list).map(key=> Object.assign(list[key], {key}));
+      stocks.map((stock) => {
+        fetch(`https://us-central1-cloud-api-2e3ec.cloudfunctions.net/api/stocks/${stock.code}`)
+          .then(response => response.text())
+          .then(text => text.split('\n'))
+          .then(str => str.slice(8, str.length-1))
+          .then(str => str[str.length-1].split(','))
+          .then((str) => {
+            console.log(str[1]);
+            updates['/stocks/' + stock.key] = {
+              avgBuyPrice: stock.avgBuyPrice,
+              code: stock.code,
+              currentPrice: str[1],
+              name: stock.name,
+              numberOfSharesHeld: stock.numberOfSharesHeld,
+              previousPrice: stock.previousPrice,
+            };
+            firebase.database().ref().update(updates);
+          });
+      });
+    });
+    return true;
   }
 
   render() {
@@ -110,7 +139,7 @@ class App extends Component {
           iconElementRight={<FlatButton label="Add" onTouchTap={this.handleOpen} />}
         /> 
         <ReactPullToRefresh
-          onRefresh={this.handleRefresh}
+          onRefresh={(s,v) => {this.handleRefresh(s,v)}}
           className="PulltoRefresh"
           style={{
             textAlign: 'center'

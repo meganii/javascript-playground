@@ -9,7 +9,8 @@
     "react-dom": "^15.6.1",
     "react-pull-to-refresh": "^1.1.1",
     "react-scripts": "1.0.10",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
+    "request": "^2.81.0"
   },
   "scripts": {
     "start": "react-scripts start",
