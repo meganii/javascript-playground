@@ -28,15 +28,13 @@ class StockList extends Component {
         stocks: stocks
       })
     });
-
-    
   }
 
   render() {
     const stockList = this.state.stocks.map((stock,index) =>
-      <div className="StockItem">
+      <div className="StockItem" key={'StockItem-' + index}>
         <Stock 
-          index={index} 
+          index={'item-' + index} 
           stockKey={stock.key}
           name={stock.name}
           code={stock.code}

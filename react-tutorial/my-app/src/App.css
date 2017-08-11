@@ -151,3 +151,7 @@
 body:not(.ptr-loading) #container .ptr-element {
 	transform: translate3d(0, -50px, 0);
 }
+
+.refresh-touch-bar {
+	background-color: gray;
+}

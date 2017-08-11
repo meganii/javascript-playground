@@ -9,7 +9,7 @@ class StockIndicator extends Component {
     if ((this.props.currentPrice - this.props.previousPrice) > 0) {
         return (
         <div className="StockIndicator">
-            <TrendingUp class="indicator" color={red500} />
+            <TrendingUp color={red500} />
             <div>{this.props.currentPrice}(+{this.props.currentPrice - this.props.previousPrice})</div>
         </div>
         );        

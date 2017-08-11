@@ -9,6 +9,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import ReactPullToRefresh from 'react-pull-to-refresh';
+import Subheader from 'material-ui/Subheader';
+
 import request from 'request';
 
 import * as firebase from 'firebase';
@@ -142,25 +144,26 @@ class App extends Component {
           onRefresh={(s,v) => {this.handleRefresh(s,v)}}
           className="PulltoRefresh"
           style={{
-            textAlign: 'center'
+          textAlign: 'center'
         }}>
-          <TotalBalance />
-          <Dialog
-            title="株登録"
-            actions={actions}
-            modal={false}
-            open={this.state.open}
-            onRequestClose={this.handleClose}
-          >
-            <TextField name="code" floatingLabelText="株コード" value={this.state.code} onChange={this.handleInputChange} />
-            <TextField name="name" floatingLabelText="名称" value={this.state.name} onChange={this.handleInputChange} />
-            <TextField name="avgBuyPrice" floatingLabelText="購入金額" value={this.state.avgBuyPrice} onChange={this.handleInputChange} />
-            <TextField name="numberOfSharesHeld" floatingLabelText="購入株数" value={this.state.numberOfSharesHeld} onChange={this.handleInputChange}/>
-          </Dialog>
-          <div className="Stocks">
-            <StockList />
+          <div className="refresh-touch-area">
+            <Subheader>Pull to Refresh</Subheader>
+            <TotalBalance /> 
           </div>
-        </ReactPullToRefresh> 
+        </ReactPullToRefresh>
+        <Dialog
+          title="株登録"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
+          <TextField name="code" floatingLabelText="株コード" value={this.state.code} onChange={this.handleInputChange} />
+          <TextField name="name" floatingLabelText="名称" value={this.state.name} onChange={this.handleInputChange} />
+          <TextField name="avgBuyPrice" floatingLabelText="購入金額" value={this.state.avgBuyPrice} onChange={this.handleInputChange} />
+          <TextField name="numberOfSharesHeld" floatingLabelText="購入株数" value={this.state.numberOfSharesHeld} onChange={this.handleInputChange}/>
+        </Dialog>
+        <StockList />
       </div>
     );
   }
