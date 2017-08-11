@@ -31,7 +31,7 @@ class TotalBlance extends Component {
   
   render(){
     return (
-      <div className="TotalBlance">Total Balance: {this.state.balance}</div>
+      <div className="TotalBlance">Total Balance: { String(this.state.balance).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}</div>
     );
   }
 }
